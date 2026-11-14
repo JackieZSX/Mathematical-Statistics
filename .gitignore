@@ -1,25 +1,73 @@
-# Virtual environments & caches
+# Virtual environments, package managers & caches
 .venv/
 .venv_wsl_backup/
 __pycache__/
 .pytest_cache/
 .agents/
+*.py[cod]
 
-# Large data files
+# Dependencies management (project uses uv with pyproject.toml and uv.lock)
+requirements.txt
+environment.yml
+
+# Large data files & archives
+data/
+*.tar.gz
+*.tar
+*.gz
+*.zip
 *.csv
 !calibration_summary.csv
 *.npz
-calibration_full_results.json
 
-# Build & verification logs
-compile_log*.txt
-runall_log*.txt
-scan*.txt
-sweep_log.txt
-final_verify*.txt
+# Legacy & intermediate results JSONs
+*.json
+!calibration_summary.json
 
-# Reference template directory
+# Build & verification logs and text outputs
+*.txt
+*.log
+
+# Reference template directory & legacy root reference PDF
 paper_/
+/数理统计.pdf
+
+# Legacy directories
+backup_legacy_*/
+antigravity_export_*/
+.drafts_J/
+.zcode/
+/figures/
+src/
+tests/
+
+# Legacy scripts & tools
+check_*.py
+gen_*.py
+restore_*.py
+scan_*.py
+diagnose_*.py
+debug_*.py
+tests_*.py
+backfill_*.py
+reembed_*.py
+refresh_*.py
+reverse_*.py
+verify_*.py
+make_tables.py
+run_all.py
+run_e2e_tests.py
+compute_variance.py
+jackknife_pseudovalues.py
+parametric_bootstrap.py
+plots_J.py
+
+# Ensure core python scripts remain tracked
+!run_calibration_experiment.py
+!plot_calibration_figures.py
+
+# Legacy markdown scratchpads
+tables_J.md
 
 # LaTeX intermediate build artifacts
 paper/*.aux
