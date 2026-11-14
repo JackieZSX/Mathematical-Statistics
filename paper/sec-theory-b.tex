@@ -26,10 +26,7 @@
 \end{equation}
 据此，对于任意置信水平 $1-\alpha \in (0, 1)$，参数 $\beta$ 的大样本渐近 Wald 双侧置信区间构造为：
 \begin{equation}\label{eq:wald_ci_beta}
-\begin{split}
-\mathrm{CI}_{1-\alpha}(\beta) = \big[ &\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \\
-&\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta) \big],
-\end{split}
+\mathrm{CI}_{1-\alpha}(\beta) = \big[ \hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \;\; \hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta) \big],
 \end{equation}
 其中 $z_{1-\alpha/2}$ 为标准正态分布的 $1-\alpha/2$ 分位数（取 $\alpha=0.05$ 时为 $1.95996 \approx 1.96$）。
 
@@ -69,10 +66,7 @@ g'(\beta) = - \frac{1}{\beta^2}.
 \end{equation}
 由此，温度参数 $T$ 在置信水平 $1-\alpha$（取 $95\%$）下的对称渐近 Wald 置信区间为：
 \begin{equation}\label{eq:wald_ci_T}
-\begin{split}
-\mathrm{CI}_{\Delta, 1-\alpha}(T) = \big[ &\hat T - z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T), \\
-&\hat T + z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T) \big].
-\end{split}
+\mathrm{CI}_{\Delta, 1-\alpha}(T) = \big[ \hat T - z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T), \;\; \hat T + z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T) \big].
 \end{equation}
 
 \subsubsection{单调逆变换反演区间与非参数 Bootstrap 百分位区间}
@@ -86,10 +80,7 @@ g'(\beta) = - \frac{1}{\beta^2}.
 \]
 由此导出的单调反演置信区间显式定义为：
 \begin{equation}\label{eq:inversion_ci}
-\begin{split}
-\mathrm{CI}_{\mathrm{inv}, 1-\alpha}(T) \equiv \Bigg[ &\frac{1}{\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)}, \\
-&\frac{1}{\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta)} \Bigg].
-\end{split}
+\mathrm{CI}_{\mathrm{inv}, 1-\alpha}(T) \equiv \left[ \frac{1}{\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)}, \;\; \frac{1}{\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta)} \right].
 \end{equation}
 由于 $g(x) = 1/x$ 具有正二阶导数（严格凸性），反演区间天然具有非对称自适应调节能力，能够合理反映非线性变换带来的右偏几何特性，避免了 Wald 区间在极端参数下出现的负值或对称失真。
 
