@@ -10,7 +10,7 @@
 
 \subsubsection{极大似然估计的渐近正态性与 Wald 区间}
 
-根据 Cramér--Rao 极大似然估计的经典大样本渐近理论，在对数似然函数连续可微、支撑集与参数无关以及 Fisher 信息量正定等标准正则性条件满足的前提下，随着校准集样本容量 $n \to \infty$，无约束极大似然估计量 $\hat\beta$ 具有弱相合性与渐近有效性，并渐近收敛于一元高斯分布：
+根据 Cramér--Rao 极大似然估计的经典大样本渐近理论~\cite{lehmann1998theory,vandervaart1998asymptotic}，在对数似然函数连续可微、支撑集与参数无关以及 Fisher 信息量正定等标准正则性条件满足的前提下，随着校准集样本容量 $n \to \infty$，无约束极大似然估计量 $\hat\beta$ 具有弱相合性与渐近有效性，并渐近收敛于一元高斯分布：
 \begin{equation}\label{eq:asymptotic_beta}
 \sqrt{n}\big(\hat\beta - \beta_0\big) \xrightarrow{d} \mathcal{N}\left(0, \;\mathcal{I}_1(\beta_0)^{-1}\right),
 \end{equation}
@@ -32,7 +32,7 @@
 
 \subsubsection{Delta 方法推导温度参数 $\hat T$ 的渐近方差}
 
-在深度学习与置信度校准实践中，具有直观物理语义的参数是正温度标量 $T = 1/\beta$。然而，$\hat T \equiv 1/\hat\beta$ 是关于随机变量 $\hat\beta$ 的非线性代数变换。为解析导出 $\hat T$ 的极限抽样分布与标准误，必须引入统计学中的 **Delta 方法**（Delta Method）。
+在深度学习与置信度校准实践中，具有直观物理语义的参数是正温度标量 $T = 1/\beta$。然而，$\hat T \equiv 1/\hat\beta$ 是关于随机变量 $\hat\beta$ 的非线性代数变换。为解析导出 $\hat T$ 的极限抽样分布与标准误，需引入统计学中的 \textbf{Delta 方法}（Delta Method）。
 
 定义单变量非线性光滑标量函数 $g: (0, \infty) \to (0, \infty)$ 为：
 \begin{equation}\label{eq:g_transform}
@@ -70,15 +70,17 @@ g'(\beta) = - \frac{1}{\beta^2}.
 
 \textbf{1. 单调逆变换反演置信区间（Inversion Confidence Interval）。}
 注意到变换函数 $g(\beta) = 1/\beta$ 在开区间 $(0, \infty)$ 上是严格单调递减的双射函数。若我们已知参数 $\beta$ 的 $1-\alpha$ 置信区间为 $[\beta_L, \beta_U] = [\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \; \hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)]$，则根据概率测度的保序性质：
-$$\mathbb{P}\big(\beta_L \le \beta \le \beta_U\big) = \mathbb{P}\left(\frac{1}{\beta_U} \le \frac{1}{\beta} \le \frac{1}{\beta_L}\right) = \mathbb{P}\left(\frac{1}{\beta_U} \le T \le \frac{1}{\beta_L}\right) = 1 - \alpha.$$
+\[
+\mathbb{P}\big(\beta_L \le \beta \le \beta_U\big) = \mathbb{P}\left(\frac{1}{\beta_U} \le \frac{1}{\beta} \le \frac{1}{\beta_L}\right) = \mathbb{P}\left(\frac{1}{\beta_U} \le T \le \frac{1}{\beta_L}\right) = 1 - \alpha.
+\]
 由此导出的单调反演置信区间显式定义为：
 \begin{equation}\label{eq:inversion_ci}
 \mathrm{CI}_{\mathrm{inv}, 1-\alpha}(T) \equiv \left[ \frac{1}{\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)}, \; \frac{1}{\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta)} \right].
 \end{equation}
-由于 $g(x) = 1/x$ 具有正二阶导数（严凸性），反演区间天然具有非对称自适应调节能力，能够合理反映非线性变换带来的右偏几何特性，避免了 Wald 区间在极端参数下出现的负值或对称失真。
+由于 $g(x) = 1/x$ 具有正二阶导数（严格凸性），反演区间天然具有非对称自适应调节能力，能够合理反映非线性变换带来的右偏几何特性，避免了 Wald 区间在极端参数下出现的负值或对称失真。
 
 \textbf{2. 非参数 Bootstrap 百分位置信区间（Percentile Bootstrap CI）。}
-为了在有限样本下完全摆脱渐近正态分布理论假设的束缚，评估经验抽样分布的真实稳健性，本文构建基于经验重抽样（Empirical Resampling）的非参数 Bootstrap 方法：
+为了在有限样本下摆脱渐近正态分布理论假设的束缚，评估经验抽样分布的稳健性，本文构建基于经验重抽样（Empirical Resampling）的非参数 Bootstrap 方法~\cite{efron1994introduction}：
 \begin{enumerate}
 \item 给定校准数据集 $\mathcal{D}_{\mathrm{cal}} = \{(\boldsymbol{z}_i, y_i)\}_{i=1}^n$；
 \item 以均匀等概率进行有放回独立抽样 $n$ 次，构造第 $b$ 次重抽样样本集 $\mathcal{D}^*_b$（$b = 1, 2, \dots, B$，$B = 2000$）；
@@ -96,7 +98,7 @@ $$\mathbb{P}\big(\beta_L \le \beta \le \beta_U\big) = \mathbb{P}\left(\frac{1}{\
 
 \subsubsection{模型校准需求的原假设检验体系（Wald / Score / LRT）}
 
-在数理统计推断中，判定网络是否处于完美校准状态等价于判定温度参数是否显著偏离基准值 1.0。形式化地，建立如下双侧统计原假设与备择假设：
+在数理统计推断中，判定网络是否处于严格校准状态等价于判定温度参数是否显著偏离基准值 1.0。形式化地，建立如下双侧统计原假设与备择假设：
 \begin{equation}\label{eq:null_hypothesis}
 H_0: \beta = 1 \quad (\text{即 } T = 1, \text{ 模型无需校准}), \quad \text{vs.} \quad H_1: \beta \ne 1 \quad (\text{即 } T \ne 1).
 \end{equation}
@@ -114,7 +116,7 @@ W \xrightarrow{d} \chi^2_1.
 \end{equation}
 
 \textbf{2. 评分检验 / 拉奥检验（Score Test / Rao Test）。}
-Score 检验的核心理论优势在于**完全无需求解复杂的备择假设无约束极大似然估计 $\hat\beta$**，仅需在受限原假设点 $\beta=1$ 处评估对数似然函数的一阶导数（梯度）与二阶曲率：
+Score 检验的核心理论优势在于\textbf{无需求解备择假设下的无约束极大似然估计 $\hat\beta$}，仅需在受限原假设点 $\beta=1$ 处评估对数似然函数的一阶导数（梯度）与二阶曲率：
 \begin{equation}\label{eq:score_test_stat}
 S \equiv \frac{\big[U(1)\big]^2}{I_n(1)} = \frac{\left[ \sum_{i=1}^n \big( z_{i, y_i} - \mathbb{E}_{p_i(1)}[Z_i] \big) \right]^2}{\sum_{i=1}^n \operatorname{Var}_{p_i(1)}(Z_i)}.
 \end{equation}
@@ -133,24 +135,24 @@ S \xrightarrow{d} \chi^2_1.
 \Lambda \xrightarrow{d} \chi^2_1.
 \end{equation}
 
-在标准渐近理论中，当样本量 $n \to \infty$ 且真实参数邻近原假设时，Wald、Score 与 LRT 渐近等价。然而在深度神经网络极端过度自信的实证场景中，真实估计值 $\hat\beta \approx 0.6$ 与原假设 $\beta_0=1$ 相距甚远。此时，对数似然曲面呈现显著的非二次非对称性曲率，直接诱发三大统计量产生可预测的系统性数值差异（详见第 4.2 节展开讨论）。
+在标准渐近理论中，当样本量 $n \to \infty$ 且真实参数邻近原假设时，Wald、Score 与 LRT 渐近等价。然而在深度神经网络显著过度自信的实证场景中，真实估计值 $\hat\beta \approx 0.6$ 与原假设 $\beta_0=1$ 相距甚远。此时，对数似然曲面呈现显著的非二次非对称性曲率，直接诱发三大统计量产生可预测的系统性数值差异（详见第~\ref{sec:discussion} 节讨论）。
 
 \subsubsection{评估集多维校准指标与配对样本检验体系}
 
-为了在独立的留出评估集 $\mathcal{D}_{\mathrm{eval}} = \{(\boldsymbol{z}_j, y_j)\}_{j=1}^{N_{\mathrm{eval}}}$（$N_{\mathrm{eval}}=8000$）上全面衡量概率校准的实际效能，本文定义四项互补的统计度量指标：
+为了在独立的留出评估集 $\mathcal{D}_{\mathrm{eval}} = \{(\boldsymbol{z}_j, y_j)\}_{j=1}^{n_{\mathrm{eval}}}$（$n_{\mathrm{eval}}=8{,}000$）上全面衡量概率校准的实际效能，本文定义四项互补的统计度量指标：
 
 \begin{enumerate}
 \item \textbf{负对数似然损失（Negative Log-Likelihood, NLL）}：作为严格适当评分规则，衡量全概率分布与真实标签的交叉熵发散度：
 \begin{equation}\label{eq:nll_eval}
-\mathrm{NLL} \equiv - \frac{1}{N_{\mathrm{eval}}} \sum_{j=1}^{N_{\mathrm{eval}}} \log p_{j, y_j}(\hat\beta).
+\mathrm{NLL} \equiv - \frac{1}{n_{\mathrm{eval}}} \sum_{j=1}^{n_{\mathrm{eval}}} \log p_{j, y_j}(\hat\beta).
 \end{equation}
 \item \textbf{Brier 分数（Brier Score, BS）}：作为另一严格适当评分规则，度量预测概率向量与独热真实标签之间的欧氏均方距离：
 \begin{equation}\label{eq:brier_eval}
-\mathrm{BS} \equiv \frac{1}{N_{\mathrm{eval}}} \sum_{j=1}^{N_{\mathrm{eval}}} \sum_{c=1}^C \Big( p_{jc}(\hat\beta) - \mathbf{1}(y_j = c) \Big)^2.
+\mathrm{BS} \equiv \frac{1}{n_{\mathrm{eval}}} \sum_{j=1}^{n_{\mathrm{eval}}} \sum_{c=1}^C \Big( p_{jc}(\hat\beta) - \mathbf{1}(y_j = c) \Big)^2.
 \end{equation}
 \item \textbf{期望校准误差（Expected Calibration Error, ECE）}：将置信度区间 $[0, 1]$ 划分为 $M$ 个等宽区间分箱 $B_m = (\frac{m-1}{M}, \frac{m}{M}]$，加权累加各分箱内预测置信度与实际分类经验准确率的绝对偏差：
 \begin{equation}\label{eq:ece_eval}
-\mathrm{ECE} \equiv \sum_{m=1}^M \frac{|B_m|}{N_{\mathrm{eval}}} \Big| \operatorname{acc}(B_m) - \operatorname{conf}(B_m) \Big|,
+\mathrm{ECE} \equiv \sum_{m=1}^M \frac{|B_m|}{n_{\mathrm{eval}}} \Big| \operatorname{acc}(B_m) - \operatorname{conf}(B_m) \Big|,
 \end{equation}
 其中 $\operatorname{acc}(B_m) = \frac{1}{|B_m|} \sum_{j \in B_m} \mathbf{1}(\hat Y_j = y_j)$，$\operatorname{conf}(B_m) = \frac{1}{|B_m|} \sum_{j \in B_m} \hat P_j$。
 \item \textbf{最大校准误差（Maximum Calibration Error, MCE）}：衡量全部分箱中极端最差情况下的最大校准偏差：
@@ -161,11 +163,9 @@ S \xrightarrow{d} \chi^2_1.
 
 在评估集的多维统计检验方面，为克服单一均值指标无法反映样本级微观变化的局限，构建如下检验：
 \begin{itemize}
-\item \textbf{样本级配对 Wilcoxon 符号秩检验与配对 $t$ 检验}：针对每个独立测试样本 $j$，计算校准前后的损失改善标量差值 $\Delta \mathrm{BS}_j = \mathrm{BS}_j^{\mathrm{uncal}} - \mathrm{BS}_j^{\mathrm{cal}}$ 与 $\Delta \mathrm{NLL}_j = \mathrm{NLL}_j^{\mathrm{uncal}} - \mathrm{NLL}_j^{\mathrm{cal}}$。构建原假设 $H_0: \mathbb{E}[\Delta] = 0$，通过配对 $t$ 检验与非参数 Wilcoxon 符号秩检验，判定校准带来的损失降低是否在全样本微观层面达到统计显著。
-\item \textbf{McNemar 决策一致性列联表检验}：为严谨核验校准对离散分类判决的影响，构建 $2 \times 2$ 分类正误列联表：
-\begin{table}[htbp]
-\centering\small
-\caption{未校准与校准后分类正误列联表}\label{tab:mcnemar_contingency}
+\item \textbf{样本级配对 Wilcoxon 符号秩检验与配对 $t$ 检验}：针对每个独立测试样本 $j$，计算校准前后的损失变化量 $\Delta \mathrm{BS}_j = \mathrm{BS}_j^{\mathrm{cal}} - \mathrm{BS}_j^{\mathrm{uncal}}$ 与 $\Delta \mathrm{NLL}_j = \mathrm{NLL}_j^{\mathrm{cal}} - \mathrm{NLL}_j^{\mathrm{uncal}}$（负值表示校准后损失降低）。构建原假设 $H_0: \mathbb{E}[\Delta] = 0$，通过配对 $t$ 检验与非参数 Wilcoxon 符号秩检验，判定校准带来的损失降低是否在全样本微观层面达到统计显著。
+\item \textbf{McNemar 决策一致性列联表检验}：为核验校准对离散分类判决的影响，构建如下 $2 \times 2$ 分类正误列联表：
+\begin{center}\small
 \begin{tabular}{lcc}
 \toprule
  & 校准后正确 & 校准后错误 \\
@@ -174,10 +174,14 @@ S \xrightarrow{d} \chi^2_1.
 未校准错误 & $c$ & $d$ \\
 \bottomrule
 \end{tabular}
-\end{table}
-其中 $b$ 为未校准正确但校准后错误的样本数，$c$ 为未校准错误但校准后正确的样本数。McNemar 检验统计量定义为连续性修正形式：
+\end{center}
+其中 $b$ 为未校准正确但校准后错误的样本数，$c$ 为未校准错误但校准后正确的样本数。连续性修正的 McNemar 检验统计量定义为：
 \begin{equation}\label{eq:mcnemar_stat}
-\chi^2_{\mathrm{McNemar}} = \frac{\big(|b - c| - 1\big)^2}{b + c} \xrightarrow{d} \chi^2_1.
+\chi^2_{\mathrm{McNemar}} =
+\begin{cases}
+\dfrac{\big(|b - c| - 1\big)^2}{b + c}, & b + c > 0 \text{ 且 } |b - c| \ge 1, \\[6pt]
+0, & b + c = 0 \text{ 或 } |b - c| < 1.
+\end{cases}
 \end{equation}
-当两模型决策完全一致时，$b=0, c=0$，两模型判别精度完全同构，按数理统计定义其检验统计量为 $0.0$，$p$-value 严格为 $1.000$。这一检验将为对比单参数 Temperature Scaling 与双参数 Platt Scaling 的保序性能提供量化基准。
+当 $b + c \to \infty$ 时，在原假设 $H_0: p_b = p_c$ 下 $\chi^2_{\mathrm{McNemar}} \xrightarrow{d} \chi^2_1$。当两模型决策完全一致时，$b=0, c=0$，检验统计量为 $0.0$，$p$ 值为 $1.000$。这一检验将为对比单参数 Temperature Scaling 与双参数 Platt Scaling 的保序性能提供量化基准。
 \end{itemize}

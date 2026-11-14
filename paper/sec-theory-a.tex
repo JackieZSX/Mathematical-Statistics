@@ -3,7 +3,7 @@
 % 2.1 概率校准的形式化定义与模型设定（TS 单参数模型与 Platt 双参数对照模型）
 % 2.2 极大似然估计、Score 方程解析推导、Fisher 信息量与严格凹性数学证明
 % =====================================================================
-\section{理论与方法基础}
+\section{理论与方法基础}\label{sec:theory}
 
 \subsection{概率校准的形式化定义与模型设定}
 
@@ -34,7 +34,7 @@
 
 \subsubsection{单参数 Temperature Scaling 模型设定}
 
-Temperature Scaling（温度缩放，TS）是一种作用于网络最终对数几率向量的多分类后处理非参数变换。本文将其严格定义为单参数指数族分布。引入非负连续温度标量参数 $T \in (0, \infty)$，或等价引入其代数倒数——**逆温度参数**（Inverse Temperature Parameter）$\beta \equiv 1/T \in (0, \infty)$。给定样本 $i$ 的对数几率向量 $\boldsymbol{z}_i$，校准后的模型条件后验概率分布定义为：
+Temperature Scaling（温度缩放，TS）是一种作用于网络最终对数几率向量的多分类单参数后处理变换。本文将其形式化为单参数指数族分布。引入非负连续温度标量参数 $T \in (0, \infty)$，或等价引入其代数倒数——\textbf{逆温度参数}（Inverse Temperature Parameter）$\beta \equiv 1/T \in (0, \infty)$。给定样本 $i$ 的对数几率向量 $\boldsymbol{z}_i$，校准后的模型条件后验概率分布定义为：
 \begin{equation}\label{eq:ts_model}
 p_{ic}(\beta) \equiv \mathbb{P}(Y_i = c \mid \boldsymbol{z}_i; \beta) = \frac{\exp(\beta z_{ic})}{\sum_{k=1}^C \exp(\beta z_{ik})} = \operatorname{Softmax}_c(\beta \boldsymbol{z}_i), \quad c = 1, 2, \dots, C.
 \end{equation}
@@ -55,8 +55,8 @@ p_{ic}(\beta) > p_{ik}(\beta).
 由指数函数的严格单调递增性，对任意 $\beta > 0$，有 $z_{ic} > z_{ik} \iff \beta z_{ic} > \beta z_{ik} \iff \exp(\beta z_{ic}) > \exp(\beta z_{ik})$。由于式~\eqref{eq:ts_model}中各分母归一化项 $\sum_k \exp(\beta z_{ik})$ 恒为严格正实数且与类别指标 $c$ 无关，两端同除分母不等号方向保持不变，即证式~\eqref{eq:order_inequality}。进而取极大值算子即可直接得出式~\eqref{eq:argmax_invariance}恒等成立。
 \end{proof}
 
-命题~\ref{prop:order_preservation}在理论上确立了 Temperature Scaling 的核心安全边界：**在后处理优化概率校准度的全过程中，模型的离散 Top-1 预测准确率在理论上被严格锁定，不会产生任何形式的判别性能退化**。
-从物理几何意义审视，当 $\beta = 1$（即 $T = 1$）时，模型精确退化为原始未校准网络；当 $\beta \in (0, 1)$（即 $T > 1$）时，$\beta$ 线性压缩了各类别 logit 之间的欧氏间距，使 Softmax 概率分布向中心平滑回缩，从而系统性抑制高置信度；当 $\beta \to 0$（即 $T \to \infty$）时，后验分布趋于离散均匀分布 $(1/C, \dots, 1/C)^\top$。
+命题~\ref{prop:order_preservation}在理论上确立了 Temperature Scaling 的保序性质：\textbf{在后处理优化概率校准度的全过程中，模型的离散 Top-1 预测准确率在理论上保持不变，不会产生判别性能退化}。
+从参数几何意义来看，当 $\beta = 1$（即 $T = 1$）时，模型精确退化为原始未校准网络；当 $\beta \in (0, 1)$（即 $T > 1$）时，$\beta$ 线性压缩了各类别 logit 之间的欧氏间距，使 Softmax 概率分布向中心平滑回缩，从而系统性抑制高置信度；当 $\beta \to 0$（即 $T \to \infty$）时，后验分布趋于离散均匀分布 $(1/C, \dots, 1/C)^\top$。
 
 \subsubsection{双参数 Platt Scaling 对照模型设定}
 
@@ -88,7 +88,7 @@ q_i(\alpha, \beta_{\mathrm{platt}}) \equiv \mathbb{P}\big(Y_i = \hat Y_i \;\big|
 &= \sum_{i=1}^n \left[ \beta z_{i, y_i} - \log \left( \sum_{k=1}^C \exp(\beta z_{ik}) \right) \right]. \label{eq:full_loglik}
 \end{align}
 
-对对数似然函数 $\ell(\beta)$ 关于参数 $\beta$ 求取一阶解析导数，可得统计学中的 **Score 函数**（记为 $U(\beta)$）：
+对对数似然函数 $\ell(\beta)$ 关于参数 $\beta$ 求取一阶解析导数，可得统计学中的 \textbf{Score 函数}（记为 $U(\beta)$）：
 \begin{align}
 U(\beta) &\equiv \frac{\mathrm{d}\ell(\beta)}{\mathrm{d}\beta} = \sum_{i=1}^n \left[ z_{i, y_i} - \frac{\sum_{k=1}^C z_{ik} \exp(\beta z_{ik})}{\sum_{m=1}^C \exp(\beta z_{im})} \right] \nonumber\\
 &= \sum_{i=1}^n \left[ z_{i, y_i} - \sum_{c=1}^C p_{ic}(\beta) z_{ic} \right]. \label{eq:score_derivation}
@@ -98,11 +98,11 @@ U(\beta) &\equiv \frac{\mathrm{d}\ell(\beta)}{\mathrm{d}\beta} = \sum_{i=1}^n \l
 \begin{equation}\label{eq:conditional_expectation}
 \mathbb{E}_{p_i(\beta)}[Z_i] \equiv \sum_{c=1}^C p_{ic}(\beta) z_{ic}.
 \end{equation}
-则 Score 函数式~\eqref{eq:score_derivation}可优美地重写为真实观测值与模型期望值的残差和：
+则 Score 函数式~\eqref{eq:score_derivation}可改写为真实观测值与模型期望值的残差和：
 \begin{equation}\label{eq:score_clean}
 U(\beta) = \sum_{i=1}^n \Big( z_{i, y_i} - \mathbb{E}_{p_i(\beta)}[Z_i] \Big).
 \end{equation}
-极大似然估计方程（Likelihood Equation）要求置 Score 函数为零，即 $U(\hat\beta) = 0$。该解析式展示出深刻的统计对称性：**在 MLE 估计点 $\hat\beta$ 处，全体校准样本中真实所属类别的 logit 总和，精确恒等于在校准后模型分布测度下所计算的期望 logit 总和**。
+极大似然估计方程（Likelihood Equation）要求置 Score 函数为零，即 $U(\hat\beta) = 0$。该解析式表明：\textbf{在 MLE 估计点 $\hat\beta$ 处，全体校准样本中真实所属类别的 logit 总和等于在校准后模型分布测度下所计算的期望 logit 总和}。
 
 \subsubsection{二阶导数、Fisher 信息量与严格凹性证明}
 
@@ -117,11 +117,11 @@ U(\beta) = \sum_{i=1}^n \Big( z_{i, y_i} - \mathbb{E}_{p_i(\beta)}[Z_i] \Big).
 &= - \sum_{i=1}^n \left[ \sum_{c=1}^C p_{ic}(\beta) z_{ic}^2 - \left( \sum_{c=1}^C p_{ic}(\beta) z_{ic} \right)^2 \right]. \label{eq:second_deriv}
 \end{align}
 
-根据数理统计理论，定义样本**观测 Fisher 信息量**（Observed Fisher Information）为负二阶导数：
+根据数理统计理论，定义样本\textbf{观测 Fisher 信息量}（Observed Fisher Information）为负二阶导数：
 \begin{equation}\label{eq:fisher_defn}
 I_n(\beta) \equiv - \frac{\mathrm{d}^2\ell(\beta)}{\mathrm{d}\beta^2} = - \ell''(\beta).
 \end{equation}
-仔细审视式~\eqref{eq:second_deriv}中方括号内的代数结构，其第二项正是条件期望的平方，第一项则是二阶矩 $\mathbb{E}_{p_i(\beta)}[Z_i^2] = \sum_{c=1}^C p_{ic}(\beta) z_{ic}^2$！因此，该方括号在数理上恒等于离散随机变量 $Z_i$ 在分布 $p_i(\beta)$ 下的**条件方差**（Conditional Variance）：
+式~\eqref{eq:second_deriv}中方括号内的第二项为条件期望的平方，第一项为二阶矩 $\mathbb{E}_{p_i(\beta)}[Z_i^2] = \sum_{c=1}^C p_{ic}(\beta) z_{ic}^2$。因此，该方括号恒等于离散随机变量 $Z_i$ 在分布 $p_i(\beta)$ 下的\textbf{条件方差}（Conditional Variance）：
 \begin{equation}\label{eq:fisher_variance}
 I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i).
 \end{equation}
@@ -139,17 +139,23 @@ I_n(\beta) > 0, \quad \forall \beta \in (0, \infty).
 \begin{proof}
 根据概率论基本性质，对于任意非退化离散随机变量，其方差恒满足 $\operatorname{Var}(X) \ge 0$，且取等号当且仅当随机变量以概率 1 退化为常数。
 对于任意样本 $i$ 以及任意有限参数 $\beta \in (0, \infty)$，由指数映射性质可知 Softmax 条件概率恒满足严格内点条件：$p_{ic}(\beta) \in (0, 1)$。由于假定存在样本 $i$ 使得类别间 logit 取值不完全相等，该样本对数几率在分布测度 $p_i(\beta)$ 下不退化为常数，因此该样本的条件方差严格大于零：
-$$\operatorname{Var}_{p_i(\beta)}(Z_i) > 0.$$
+\[
+\operatorname{Var}_{p_i(\beta)}(Z_i) > 0.
+\]
 将其代入式~\eqref{eq:fisher_variance}，作为非负项与至少一个严格正项的有限求和，必然得出：
-$$I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i) > 0, \quad \forall \beta \in (0, \infty).$$
+\[
+I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i) > 0, \quad \forall \beta \in (0, \infty).
+\]
 从而对数似然的二阶导数处处严格为负：
-$$\ell''(\beta) = -I_n(\beta) < 0, \quad \forall \beta \in (0, \infty).$$
+\[
+\ell''(\beta) = -I_n(\beta) < 0, \quad \forall \beta \in (0, \infty).
+\]
 由凸分析基本定理，定义在凸集上的二次连续可微函数若其二阶导数恒严格负，则该函数在该凸集上严格凹。若严格凹函数在开区间内部存在一阶导数为零的驻点 $\hat\beta$（即 $U(\hat\beta)=0$），则该点必为唯一的全局极大值点。定理证毕。
 \end{proof}
 
-\subsubsection{阻尼 Newton--Raphson 求解算法}
+\subsubsection{阻尼 Newton--Raphson 求解}
 
-得益于定理~\ref{thm:strict_concavity}所保证的全局严格凹性，对数似然曲面上不存在任何局部非凸陷阱与假驻点。此外，二阶导数式~\eqref{eq:fisher_variance}具备紧凑的条件方差闭式表达，使得采用二阶牛顿法求解具备极高的数值效率。本文设计带 Armijo 回溯线搜索（Backtracking Line Search）的阻尼 Newton--Raphson 算法求解 $\hat\beta$：
+得益于定理~\ref{thm:strict_concavity}所保证的全局严格凹性，对数似然曲面上不存在局部非凸陷阱或伪驻点。此外，二阶导数式~\eqref{eq:fisher_variance}具备条件方差的闭式表达，便于采用二阶牛顿法高效求解。本文采用标准的带回溯线搜索（Backtracking Line Search）的阻尼 Newton--Raphson 迭代法求解 $\hat\beta$：
 \begin{equation}\label{eq:newton_iteration}
 \beta^{(t+1)} = \beta^{(t)} + \gamma_t \frac{U(\beta^{(t)})}{I_n(\beta^{(t)})}, \quad t = 0, 1, 2, \dots
 \end{equation}
