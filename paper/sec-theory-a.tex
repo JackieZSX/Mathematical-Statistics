@@ -34,7 +34,7 @@
 
 \subsubsection{单参数 Temperature Scaling 模型设定}
 
-Temperature Scaling（温度缩放，TS）是一种作用于网络最终对数几率向量的多分类单参数后处理变换。本文将其形式化为单参数指数族分布。引入非负连续温度标量参数 $T \in (0, \infty)$，或等价引入其代数倒数——\textbf{逆温度参数}（Inverse Temperature Parameter）$\beta \equiv 1/T \in (0, \infty)$。给定样本 $i$ 的对数几率向量 $\boldsymbol{z}_i$，校准后的模型条件后验概率分布定义为：
+Temperature Scaling（温度缩放，TS）是由 Guo 等~\cite{guo2017calibration} 提出的一种作用于网络最终对数几率向量的多分类单参数后处理变换，在统计上对应于单参数指数族条件分布。引入非负连续温度标量参数 $T \in (0, \infty)$，或等价引入其代数倒数——\textbf{逆温度参数}（Inverse Temperature Parameter）$\beta \equiv 1/T \in (0, \infty)$。给定样本 $i$ 的对数几率向量 $\boldsymbol{z}_i$，校准后的模型条件后验概率分布定义为：
 \begin{equation}\label{eq:ts_model}
 \begin{split}
 p_{ic}(\beta) \equiv \mathbb{P}(Y_i = c \mid \boldsymbol{z}_i; \beta) &= \frac{\exp(\beta z_{ic})}{\sum_{k=1}^C \exp(\beta z_{ik})} \\

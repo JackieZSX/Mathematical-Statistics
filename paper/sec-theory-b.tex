@@ -92,7 +92,7 @@ g'(\beta) = - \frac{1}{\beta^2}.
 由于 $g(x) = 1/x$ 具有正二阶导数（严格凸性），反演区间天然具有非对称自适应调节能力，能够合理反映非线性变换带来的右偏几何特性，避免了 Wald 区间在极端参数下出现的负值或对称失真。
 
 \textbf{2. 非参数 Bootstrap 百分位置信区间（Percentile Bootstrap CI）。}
-为了在有限样本下摆脱渐近正态分布理论假设的束缚，评估经验抽样分布的稳健性，本文构建基于经验重抽样（Empirical Resampling）的非参数 Bootstrap 方法~\cite{efron1994introduction}：
+为了在有限样本下摆脱渐近正态分布理论假设的束缚，评估经验抽样分布的稳健性，本文采用基于经验重抽样（Empirical Resampling）的非参数 Bootstrap 方法~\cite{efron1994introduction}：
 \begin{enumerate}
 \item 给定校准数据集 $\mathcal{D}_{\mathrm{cal}} = \{(\boldsymbol{z}_i, y_i)\}_{i=1}^n$；
 \item 以均匀等概率进行有放回独立抽样 $n$ 次，构造第 $b$ 次重抽样样本集 $\mathcal{D}^*_b$（$b = 1, 2, \dots, B$，$B = 2000$）；
@@ -106,7 +106,7 @@ g'(\beta) = - \frac{1}{\beta^2}.
 
 \subsection{校准需求与校准效果的统计假设检验体系}
 
-为从统计显著性层面严密裁定模型是否存在校准偏差，并科学评价校准带来的泛化性能增益，本文构建分层双轨检验体系：在参数层面建立针对无需校准原假设的三大经典渐近检验，在评估集层面建立针对预测损失与分类决策的多维非参数配对检验。
+为从统计显著性层面裁定模型是否存在校准偏差，并客观评价校准带来的泛化性能增益，本文应用经典的统计假设检验方法开展双重检验：在参数层面采用针对无需校准原假设的三大经典渐近检验（Wald、Score 与 LRT），在评估集层面采用针对预测损失与分类决策的非参数配对检验与 McNemar 检验。
 
 \subsubsection{模型校准需求的原假设检验体系（Wald / Score / LRT）}
 
