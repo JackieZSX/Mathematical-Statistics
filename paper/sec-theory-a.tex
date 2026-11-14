@@ -30,14 +30,15 @@
 则称该多分类模型满足严格条件概率校准。
 \end{defn}
 
-然而，在由大量卷积层与残差连接构成的现代网络中，经验损失最小化训练导致对数几率向量 $\boldsymbol{z}_i$ 的模长显著过大，打破了式~\eqref{eq:calibration_formal}的平衡，导致系统性的过度自信。为消除这一概率失配，我们建立后处理参数校准统计模型。
+然而，在由大量卷积层与残差连接构成的现代网络中，经验损失最小化训练导致对数几率向量 $\boldsymbol{z}_i$ 的模长显著过大，打破了式~\eqref{eq:calibration_formal}的平衡，导致系统性的过度自信。为消除这一概率失配，下文引入后处理参数校准统计模型。
 
 \subsubsection{单参数 Temperature Scaling 模型设定}
 
 Temperature Scaling（温度缩放，TS）是由 Guo 等~\cite{guo2017calibration} 提出的一种作用于网络最终对数几率向量的多分类单参数后处理变换，在统计上对应于单参数指数族条件分布。引入非负连续温度标量参数 $T \in (0, \infty)$，或等价引入其代数倒数——\textbf{逆温度参数}（Inverse Temperature Parameter）$\beta \equiv 1/T \in (0, \infty)$。给定样本 $i$ 的对数几率向量 $\boldsymbol{z}_i$，校准后的模型条件后验概率分布定义为：
 \begin{equation}\label{eq:ts_model}
 \begin{split}
-p_{ic}(\beta) \equiv \mathbb{P}(Y_i = c \mid \boldsymbol{z}_i; \beta) &= \frac{\exp(\beta z_{ic})}{\sum_{k=1}^C \exp(\beta z_{ik})} \\
+p_{ic}(\beta) &\equiv \mathbb{P}(Y_i = c \mid \boldsymbol{z}_i; \beta) \\
+&= \frac{\exp(\beta z_{ic})}{\sum_{k=1}^C \exp(\beta z_{ik})} \\
 &= \operatorname{Softmax}_c(\beta \boldsymbol{z}_i), \quad c = 1, 2, \dots, C.
 \end{split}
 \end{equation}
@@ -71,7 +72,8 @@ x_i \equiv \operatorname{logit}(\hat P_i) = \log\left(\frac{\hat P_i}{1 - \hat P
 \begin{equation}\label{eq:platt_formula}
 \begin{split}
 q_i(\alpha, \beta_{\mathrm{platt}}) &\equiv \mathbb{P}\big(Y_i = \hat Y_i \;\big|\; x_i; \alpha, \beta_{\mathrm{platt}}\big) \\
-&= \sigma(\alpha + \beta_{\mathrm{platt}} x_i) = \frac{1}{1 + \exp\big(-(\alpha + \beta_{\mathrm{platt}} x_i)\big)},
+&= \sigma(\alpha + \beta_{\mathrm{platt}} x_i) \\
+&= \frac{1}{1 + \exp\big(-(\alpha + \beta_{\mathrm{platt}} x_i)\big)},
 \end{split}
 \end{equation}
 其中 $\sigma(\cdot)$ 为标准单变量 Sigmoid 激活函数。对于其余非 Top-1 类别的剩余概率，采用条件独立比例重归一化：
@@ -96,7 +98,8 @@ q_i(\alpha, \beta_{\mathrm{platt}}) &\equiv \mathbb{P}\big(Y_i = \hat Y_i \;\big
 
 对对数似然函数 $\ell(\beta)$ 关于参数 $\beta$ 求取一阶解析导数，可得统计学中的 \textbf{Score 函数}（记为 $U(\beta)$）：
 \begin{align}
-U(\beta) &\equiv \frac{\mathrm{d}\ell(\beta)}{\mathrm{d}\beta} = \sum_{i=1}^n \left[ z_{i, y_i} - \frac{\sum_{k=1}^C z_{ik} \exp(\beta z_{ik})}{\sum_{m=1}^C \exp(\beta z_{im})} \right] \nonumber\\
+U(\beta) &\equiv \frac{\mathrm{d}\ell(\beta)}{\mathrm{d}\beta} \nonumber\\
+&= \sum_{i=1}^n \left[ z_{i, y_i} - \frac{\sum_{k=1}^C z_{ik} \exp(\beta z_{ik})}{\sum_{m=1}^C \exp(\beta z_{im})} \right] \nonumber\\
 &= \sum_{i=1}^n \left[ z_{i, y_i} - \sum_{c=1}^C p_{ic}(\beta) z_{ic} \right]. \label{eq:score_derivation}
 \end{align}
 
@@ -121,7 +124,8 @@ U(\beta) = \sum_{i=1}^n \Big( z_{i, y_i} - \mathbb{E}_{p_i(\beta)}[Z_i] \Big).
 \end{equation}
 利用式~\eqref{eq:softmax_derivative}，直接对式~\eqref{eq:score_derivation}求导：
 \begin{align}
-\frac{\mathrm{d}^2\ell(\beta)}{\mathrm{d}\beta^2} &= \frac{\mathrm{d} U(\beta)}{\mathrm{d}\beta} = - \sum_{i=1}^n \sum_{c=1}^C z_{ic} \frac{\mathrm{d} p_{ic}(\beta)}{\mathrm{d}\beta} \nonumber\\
+\frac{\mathrm{d}^2\ell(\beta)}{\mathrm{d}\beta^2} &= \frac{\mathrm{d} U(\beta)}{\mathrm{d}\beta} \nonumber\\
+&= - \sum_{i=1}^n \sum_{c=1}^C z_{ic} \frac{\mathrm{d} p_{ic}(\beta)}{\mathrm{d}\beta} \nonumber\\
 &= - \sum_{i=1}^n \sum_{c=1}^C z_{ic} \left[ p_{ic}(\beta) z_{ic} - p_{ic}(\beta) \sum_{k=1}^C p_{ik}(\beta) z_{ik} \right] \nonumber\\
 &= - \sum_{i=1}^n \left[ \sum_{c=1}^C p_{ic}(\beta) z_{ic}^2 - \left( \sum_{c=1}^C p_{ic}(\beta) z_{ic} \right)^2 \right]. \label{eq:second_deriv}
 \end{align}
@@ -135,7 +139,7 @@ I_n(\beta) \equiv - \frac{\mathrm{d}^2\ell(\beta)}{\mathrm{d}\beta^2} = - \ell''
 I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i).
 \end{equation}
 
-基于式~\eqref{eq:fisher_variance}，我们给出本模型最核心的数学收敛性定理：
+基于式~\eqref{eq:fisher_variance}，可得本模型最核心的数学收敛性定理：
 
 \begin{thm}[对数似然的严格凹性与 MLE 唯一全局最优性]\label{thm:strict_concavity}
 设校准集 $\mathcal{D}_{\mathrm{cal}}$ 中至少存在一个样本 $i$，其输出对数几率向量是非退化的（即存在至少两类 $c \ne k$ 使得 $z_{ic} \ne z_{ik}$）。则对于任意参数值 $\beta \in (0, \infty)$，观测 Fisher 信息量严格正定：

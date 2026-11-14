@@ -55,7 +55,7 @@ I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i).
 这一实证微观偏离并非实验计算误差，而是抽样调查理论中\textbf{有限总体修正}（Finite Population Correction, FPC）效应在机器学习实验中的客观反映：
 \begin{itemize}
 \item 经典 Delta 方法式~\eqref{eq:delta_se_formula}建立在\textbf{无限超总体}（Super-Population）的假定之上，即假定样本是在独立同分布测度下从一个容量无限的母体中进行有放回抽样；
-\item 然而在标准机器学习基准测试中，CIFAR-10 官方测试集的总规模是有限固定的，其全量样本容量严格为 $N = 10{,}000$。我们在划分校准集时，采用的是\textbf{无放回分层随机抽样}；
+\item 然而在标准机器学习基准测试中，CIFAR-10 官方测试集的总规模是有限固定的，其全量样本容量严格为 $N = 10{,}000$。本文在划分校准集时，采用的是\textbf{无放回分层随机抽样}；
 \item 根据统计抽样理论，当从容量为 $N$ 的有限总体中无放回抽取规模为 $n$ 的样本时，估计量的抽样方差必须引入有限总体修正因子：
 \begin{equation}\label{eq:fpc_formula}
 \operatorname{Var}_{\mathrm{finite}}(\hat T) = \operatorname{Var}_{\mathrm{infinite}}(\hat T) \times \left(1 - \frac{n}{N}\right).
@@ -66,7 +66,7 @@ I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i).
 \end{equation}
 \end{itemize}
 
-在我们的实验配置中，当 $n_{\mathrm{cal}} = 200$ 时，$n/N = 0.02$，$\mathrm{FPC} = \sqrt{0.98} \approx 0.9899$，有限总体影响微乎其微；而当样本量扩大至 $n_{\mathrm{cal}} = 4000$ 时，抽样分数高达 $n/N = 0.40$，对应理论修正因子为：
+在本文的实验配置中，当 $n_{\mathrm{cal}} = 200$ 时，$n/N = 0.02$，$\mathrm{FPC} = \sqrt{0.98} \approx 0.9899$，有限总体影响微乎其微；而当样本量扩大至 $n_{\mathrm{cal}} = 4000$ 时，抽样分数高达 $n/N = 0.40$，对应理论修正因子为：
 \[
 \mathrm{FPC} = \sqrt{1 - 0.40} = \sqrt{0.60} \approx 0.7746.
 \]
@@ -79,7 +79,7 @@ I_n(\beta) = \sum_{i=1}^n \operatorname{Var}_{p_i(\beta)}(Z_i).
 
 \subsection{单参数与双参数校准方法的效率--保序权衡}
 
-在表~\ref{tab:table3_eval_comparison}中，我们系统对比了单参数 Temperature Scaling 与双参数 Platt Scaling 的实证表现。两者展现出鲜明的方法学权衡特征（Trade-Off）：
+在表~\ref{tab:table3_eval_comparison}中，本文系统对比了单参数 Temperature Scaling 与双参数 Platt Scaling 的实证表现。两者展现出鲜明的方法学权衡特征（Trade-Off）：
 
 \begin{enumerate}
 \item \textbf{参数自由度与统计估计效率}：

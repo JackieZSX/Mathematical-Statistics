@@ -55,13 +55,15 @@ g'(\beta) = - \frac{1}{\beta^2}.
 \begin{align}
 \widehat{\operatorname{Var}}(\hat T) &\approx \big[g'(\hat\beta)\big]^2 \widehat{\operatorname{Var}}(\hat\beta) \nonumber\\
 &= \left( - \frac{1}{\hat\beta^2} \right)^2 \frac{1}{I_n(\hat\beta)} \nonumber\\
-&= \frac{1}{\hat\beta^4 I_n(\hat\beta)} = \frac{\hat T^4}{I_n(\hat\beta)}. \label{eq:t_variance_analytic}
+&= \frac{1}{\hat\beta^4 I_n(\hat\beta)} \nonumber\\
+&= \frac{\hat T^4}{I_n(\hat\beta)}. \label{eq:t_variance_analytic}
 \end{align}
 
 取方差的平方根，即可得到温度参数估计量 $\hat T$ 的一阶 Delta 渐近标准误（Delta Standard Error）：
 \begin{equation}\label{eq:delta_se_formula}
 \begin{split}
-\mathrm{SE}_\Delta(\hat T) &= \frac{\mathrm{SE}(\hat\beta)}{\hat\beta^2} = \hat T^2 \mathrm{SE}(\hat\beta) \\
+\mathrm{SE}_\Delta(\hat T) &= \frac{\mathrm{SE}(\hat\beta)}{\hat\beta^2} \\
+&= \hat T^2 \mathrm{SE}(\hat\beta) \\
 &= \frac{1}{\hat\beta^2 \sqrt{I_n(\hat\beta)}}.
 \end{split}
 \end{equation}
@@ -78,7 +80,7 @@ g'(\beta) = - \frac{1}{\beta^2}.
 除一阶线性化 Wald 区间外，本文进一步构建两类精度更高的置信区间：
 
 \textbf{1. 单调逆变换反演置信区间（Inversion Confidence Interval）。}
-注意到变换函数 $g(\beta) = 1/\beta$ 在开区间 $(0, \infty)$ 上是严格单调递减的双射函数。若我们已知参数 $\beta$ 的 $1-\alpha$ 置信区间为 $[\beta_L, \beta_U] = [\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \; \hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)]$，则根据概率测度的保序性质：
+注意到变换函数 $g(\beta) = 1/\beta$ 在开区间 $(0, \infty)$ 上是严格单调递减的双射函数。若已知参数 $\beta$ 的 $1-\alpha$ 置信区间为 $[\beta_L, \beta_U] = [\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \; \hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)]$，则根据概率测度的保序性质：
 \[
 \mathbb{P}\big(\beta_L \le \beta \le \beta_U\big) = \mathbb{P}\left(\frac{1}{\beta_U} \le \frac{1}{\beta} \le \frac{1}{\beta_L}\right) = \mathbb{P}\left(\frac{1}{\beta_U} \le T \le \frac{1}{\beta_L}\right) = 1 - \alpha.
 \]
