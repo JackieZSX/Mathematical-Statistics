@@ -26,7 +26,10 @@
 \end{equation}
 据此，对于任意置信水平 $1-\alpha \in (0, 1)$，参数 $\beta$ 的大样本渐近 Wald 双侧置信区间构造为：
 \begin{equation}\label{eq:wald_ci_beta}
-\mathrm{CI}_{1-\alpha}(\beta) = \left[ \hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \; \hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta) \right],
+\begin{split}
+\mathrm{CI}_{1-\alpha}(\beta) = \big[ &\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta), \\
+&\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta) \big],
+\end{split}
 \end{equation}
 其中 $z_{1-\alpha/2}$ 为标准正态分布的 $1-\alpha/2$ 分位数（取 $\alpha=0.05$ 时为 $1.95996 \approx 1.96$）。
 
@@ -57,11 +60,17 @@ g'(\beta) = - \frac{1}{\beta^2}.
 
 取方差的平方根，即可得到温度参数估计量 $\hat T$ 的一阶 Delta 渐近标准误（Delta Standard Error）：
 \begin{equation}\label{eq:delta_se_formula}
-\mathrm{SE}_\Delta(\hat T) = \frac{\mathrm{SE}(\hat\beta)}{\hat\beta^2} = \hat T^2 \mathrm{SE}(\hat\beta) = \frac{1}{\hat\beta^2 \sqrt{I_n(\hat\beta)}}.
+\begin{split}
+\mathrm{SE}_\Delta(\hat T) &= \frac{\mathrm{SE}(\hat\beta)}{\hat\beta^2} = \hat T^2 \mathrm{SE}(\hat\beta) \\
+&= \frac{1}{\hat\beta^2 \sqrt{I_n(\hat\beta)}}.
+\end{split}
 \end{equation}
 由此，温度参数 $T$ 在置信水平 $1-\alpha$（取 $95\%$）下的对称渐近 Wald 置信区间为：
 \begin{equation}\label{eq:wald_ci_T}
-\mathrm{CI}_{\Delta, 1-\alpha}(T) = \left[ \hat T - z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T), \; \hat T + z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T) \right].
+\begin{split}
+\mathrm{CI}_{\Delta, 1-\alpha}(T) = \big[ &\hat T - z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T), \\
+&\hat T + z_{1-\alpha/2} \mathrm{SE}_\Delta(\hat T) \big].
+\end{split}
 \end{equation}
 
 \subsubsection{单调逆变换反演区间与非参数 Bootstrap 百分位区间}
@@ -75,7 +84,10 @@ g'(\beta) = - \frac{1}{\beta^2}.
 \]
 由此导出的单调反演置信区间显式定义为：
 \begin{equation}\label{eq:inversion_ci}
-\mathrm{CI}_{\mathrm{inv}, 1-\alpha}(T) \equiv \left[ \frac{1}{\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)}, \; \frac{1}{\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta)} \right].
+\begin{split}
+\mathrm{CI}_{\mathrm{inv}, 1-\alpha}(T) \equiv \Bigg[ &\frac{1}{\hat\beta + z_{1-\alpha/2}\mathrm{SE}(\hat\beta)}, \\
+&\frac{1}{\hat\beta - z_{1-\alpha/2}\mathrm{SE}(\hat\beta)} \Bigg].
+\end{split}
 \end{equation}
 由于 $g(x) = 1/x$ 具有正二阶导数（严格凸性），反演区间天然具有非对称自适应调节能力，能够合理反映非线性变换带来的右偏几何特性，避免了 Wald 区间在极端参数下出现的负值或对称失真。
 
@@ -118,7 +130,10 @@ W \xrightarrow{d} \chi^2_1.
 \textbf{2. 评分检验 / 拉奥检验（Score Test / Rao Test）。}
 Score 检验的核心理论优势在于\textbf{无需求解备择假设下的无约束极大似然估计 $\hat\beta$}，仅需在受限原假设点 $\beta=1$ 处评估对数似然函数的一阶导数（梯度）与二阶曲率：
 \begin{equation}\label{eq:score_test_stat}
-S \equiv \frac{\big[U(1)\big]^2}{I_n(1)} = \frac{\left[ \sum_{i=1}^n \big( z_{i, y_i} - \mathbb{E}_{p_i(1)}[Z_i] \big) \right]^2}{\sum_{i=1}^n \operatorname{Var}_{p_i(1)}(Z_i)}.
+\begin{split}
+S &\equiv \frac{\big[U(1)\big]^2}{I_n(1)} \\
+&= \frac{\left[ \sum_{i=1}^n \big( z_{i, y_i} - \mathbb{E}_{p_i(1)}[Z_i] \big) \right]^2}{\sum_{i=1}^n \operatorname{Var}_{p_i(1)}(Z_i)}.
+\end{split}
 \end{equation}
 在原假设 $H_0$ 成立时，根据中心极限定理，$U(1)/\sqrt{I_n(1)} \xrightarrow{d} \mathcal{N}(0, 1)$，其平方统计量渐近服从卡方分布：
 \begin{equation}\label{eq:score_distribution}

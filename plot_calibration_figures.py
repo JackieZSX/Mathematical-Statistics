@@ -138,7 +138,8 @@ def plot_fig1(res):
     ax.plot(positions[:2], means[:2], "o-", color=C_R20, lw=1.8, ms=6)
     ax.plot(positions[2:], means[2:], "s-", color=C_R56, lw=1.8, ms=6)
     for p, m in zip(positions, means):
-        ax.text(p, m + 0.025, f"{m:.3f}", ha="center", va="bottom", fontsize=8.5, fontweight="bold")
+        ax.text(p, m + 0.025, f"{m:.3f}", ha="center", va="bottom", fontsize=8.5, fontweight="bold",
+                bbox=dict(boxstyle="round,pad=0.15", facecolor="white", edgecolor="none", alpha=0.88), zorder=10)
     ax.set_xticks(positions)
     ax.set_xticklabels(labels_g, fontsize=9.2)
     ax.set_ylim(0.15, 1.08)
@@ -219,12 +220,12 @@ def plot_fig2(res):
     ax.axhline(crit, color="black", ls="--", lw=1.3, label=f"95% LRT 临界线 ({crit:.2f})")
     ax.axvline(1.0, color="#555555", ls="-.", lw=1.3, label="$H_0: T=1$ (未校准)")
     ax.set_xlim(0.75, 2.05)
-    ax.set_ylim(-45, 3)
+    ax.set_ylim(-52, 4)
     ax.xaxis.set_major_locator(MultipleLocator(0.2))
     ax.yaxis.set_major_locator(MultipleLocator(10))
     ax.set_xlabel("温度参数 $T$", fontsize=10.5)
     ax.set_ylabel("相对对数似然 $\\ell(T) - \\ell(\\hat T)$", fontsize=10.5)
-    ax.legend(loc="lower right", fontsize=8.0, frameon=True)
+    ax.legend(loc="lower left", fontsize=7.8, frameon=True)
     ax.set_title("(a) 相对对数似然剖面与 LRT 95% 区间", fontsize=11.2, fontweight="bold")
 
     # (b) Score 函数 U(beta) 曲线与切线斜率 (-I)
@@ -402,6 +403,7 @@ def plot_fig4(res):
         ax.xaxis.set_major_locator(MultipleLocator(0.05))
         ax.set_xlabel("温度参数估计 $\\hat T$", fontsize=10.5)
         ax.set_ylabel("概率密度", fontsize=10.5)
+        ax.set_ylim(0, ax.get_ylim()[1] * 1.48)
         ax.legend(loc="upper right", fontsize=7.6, frameon=True)
         ax.set_title(f"({'ab'[idx]}) {lbl} Bootstrap 分布与渐近正态对比", fontsize=11.2, fontweight="bold")
 
@@ -462,7 +464,7 @@ def plot_fig5(res):
     ax.yaxis.set_major_locator(MultipleLocator(0.1))
     ax.set_xlabel("校准样本量 $n_{\\mathrm{cal}}$ (对数轴)", fontsize=10.5)
     ax.set_ylabel("温度参数估计 $\\hat T$", fontsize=10.5)
-    ax.legend(loc="upper right", fontsize=7.6, frameon=True)
+    ax.legend(loc="lower right", bbox_to_anchor=(0.98, 0.08), fontsize=7.6, frameon=True)
     ax.set_title("(a) $\\hat T$ 随校准样本量 $n_{\\mathrm{cal}}$ 的收敛轨迹", fontsize=11.2, fontweight="bold")
 
     # (b) log(SE) vs log(n_cal) 与 -1/2 理论收敛斜率
@@ -486,6 +488,7 @@ def plot_fig5(res):
     ax.get_xaxis().set_minor_formatter(matplotlib.ticker.NullFormatter())
     ax.set_xlabel("校准样本量 $n_{\\mathrm{cal}}$ (对数轴)", fontsize=10.5)
     ax.set_ylabel("标准误 $\\mathrm{SE}(\\hat T)$ (对数轴)", fontsize=10.5)
+    ax.set_ylim(1.4e-2, 2.5e-1)
     ax.legend(loc="lower left", fontsize=7.6, frameon=True)
     ax.set_title("(b) $\\mathrm{SE}(\\hat T)$ 的 $\\sqrt{n}$ 相合收敛速率验证", fontsize=11.2, fontweight="bold")
 
@@ -514,10 +517,10 @@ def plot_fig5(res):
     ax.bar(x + 1.5*w, d_r56_pl, width=w, color="#fb6a4a", label="R56 PlattScaling")
     for xi, vals in enumerate([d_r20_ts, d_r20_pl, d_r56_ts, d_r56_pl]):
         for j, val in enumerate(vals):
-            ax.text(j + (xi - 1.5)*w, val + 1.2, f"{val:.1f}%", ha="center", va="bottom", fontsize=7.0, rotation=45)
+            ax.text(j + (xi - 1.5)*w, val + 1.5, f"{val:.1f}%", ha="center", va="bottom", fontsize=6.8, rotation=60)
     ax.set_xticks(x)
     ax.set_xticklabels(metrics, fontsize=8.8)
-    ax.set_ylim(0, 102)
+    ax.set_ylim(0, 108)
     ax.yaxis.set_major_locator(MultipleLocator(15))
     ax.set_ylabel("相对未校准模型的改善幅度 (%)", fontsize=10.5)
     ax.legend(loc="upper left", fontsize=7.6, frameon=True)
