@@ -1,0 +1,32 @@
+# Virtual environments & caches
+.venv/
+.venv_wsl_backup/
+__pycache__/
+.pytest_cache/
+.agents/
+
+# Large data files
+*.csv
+!calibration_summary.csv
+*.npz
+calibration_full_results.json
+
+# Build & verification logs
+compile_log*.txt
+runall_log*.txt
+scan*.txt
+sweep_log.txt
+final_verify*.txt
+
+# Reference template directory
+paper_/
+
+# LaTeX intermediate build artifacts
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.toc
+paper/*.synctex*
+paper/*.xdv
+paper/*.fls
+paper/*.fdb_latexmk

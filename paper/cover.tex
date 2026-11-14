@@ -1,0 +1,32 @@
+% =====================================================================
+% cover.tex — 封面页（无 \section，不进目录，无页码）
+% 模板：数理统计.pdf 第 1 页规范重建
+% =====================================================================
+\thispagestyle{empty}
+\newcommand{\coverline}[1]{%
+  \rlap{\rule[-2.2pt]{240pt}{1.08pt}}\makebox[240pt][c]{\zihao{5}#1}}
+\vspace*{1.83cm}
+\begin{center}
+  {\heiti\zihao{0}数理统计课程论文\par}
+  \vspace{0.9cm}
+  \includegraphics[width=5.08cm]{hfut_logo}\par
+  \vspace{1.4cm}
+  {\songti\zihao{3}%
+    \makebox[48bp][l]{题目：}%
+    \begin{tabular}[c]{@{}c@{}}
+      \coverline{深度神经网络置信度校准的极大似然推断与}\\[11pt]
+      \coverline{假设检验：基于 Temperature Scaling 的}\\[11pt]
+      \coverline{统计建模与实证分析}
+    \end{tabular}\par}
+  \vspace{0.6cm}
+  {\songti\zihao{3}\makebox[48bp][l]{姓名：}\coverline{}}\par
+  \vspace{1.55cm}
+  {\songti\zihao{3}\makebox[48bp][l]{学号：}\coverline{}}\par
+  \vspace{1.55cm}
+  {\songti\zihao{3}\makebox[48bp][l]{学院：}\coverline{}}\par
+\end{center}
+\vfill
+\begin{center}
+  {\songti\zihao{3}2026-11-16\par}
+\end{center}
+\clearpage

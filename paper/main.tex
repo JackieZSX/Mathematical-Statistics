@@ -1,0 +1,95 @@
+% !TeX program = xelatex
+% =====================================================================
+% 数理统计课程论文 · 完整 LaTeX 主文件
+% 论文标题：深度神经网络置信度校准的极大似然推断与假设检验：
+%           基于 Temperature Scaling 的统计建模与实证分析
+% 编译命令：xelatex -interaction=nonstopmode -enable-installer main.tex
+% =====================================================================
+\documentclass[a4paper,fontset=windows,zihao=-4]{ctexart}
+
+% ---- 页面边距与行间距 ------------------------------------------------
+\usepackage[a4paper,margin=2.54cm]{geometry}   % A4 纸张，标准四边 2.54cm
+\usepackage{setspace}                          % 1.25 倍行距
+\setstretch{1.25}
+
+% ---- 数学公式、定理与符号宏包 ----------------------------------------
+\usepackage{amsmath,amssymb}
+\usepackage{amsthm}
+\usepackage{mathtools}
+
+% ---- 学术表格宏包 ----------------------------------------------------
+\usepackage{booktabs}                          % 标准学术三线表
+\usepackage{tabularx}                          % 自适应宽度表格
+\usepackage{multirow}                          % 多行单元格合并
+\usepackage{siunitx}                           % 科学计数与小数点列对齐
+
+% ---- 图形与子图宏包 --------------------------------------------------
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\graphicspath{{figures/}{../figures_calib/}{figures_calib/}}
+
+% ---- 算法伪代码宏包 --------------------------------------------------
+\usepackage[ruled,linesnumbered]{algorithm2e}
+\SetAlgorithmName{算法}{算法}{算法清单}
+
+% ---- 辅助工具宏包 ----------------------------------------------------
+\usepackage{xcolor}
+\usepackage{etoolbox}
+
+% ---- 定理类环境声明 --------------------------------------------------
+\newtheorem{prop}{命题}
+\newtheorem{assumption}{假设}
+\newtheorem{thm}{定理}
+\newtheorem{defn}{定义}
+
+% ---- 摘要页关键词宏 --------------------------------------------------
+\newcommand{\keywords}[1]{\par\vspace{1.2em}\noindent{\heiti 关键词：}#1\par}
+
+% ---- 浮动体排版优化参数 ----------------------------------------------
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\floatpagefraction}{0.75}
+
+% ---- 参考文献标题补丁（由 sec-refs.tex 独立控制 \section*{参考文献}）
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}%
+  {\renewcommand{\refname}{}\PackageWarning{main}{patch of thebibliography heading failed; fell back to empty \refname}}
+
+% ---- 超链接配置（最后加载）------------------------------------------
+\usepackage[hidelinks]{hyperref}
+\hypersetup{
+  bookmarksnumbered,
+  bookmarksdepth=2,
+  pdftitle={深度神经网络置信度校准的极大似然推断与假设检验：基于 Temperature Scaling 的统计建模与实证分析},
+  pdfauthor={数理统计课题组}
+}
+
+\begin{document}
+
+% 封面页（仿《数理统计.pdf》第 1 页规范重建，无页码，不进目录）
+\input{cover}
+
+% 摘要与关键词页（独立编号，从第 1 页起）
+\clearpage
+\pagestyle{plain}
+\setcounter{page}{1}
+\input{sec-abstract}
+
+% 目录页（两级目录）
+\clearpage
+\tableofcontents
+
+% 正文主体部分
+\clearpage
+\input{sec-intro}
+\input{sec-theory-a}
+\input{sec-theory-b}
+\input{sec-empirical}
+\input{sec-discussion}
+
+% 参考文献与附录（五号字排版，不编号节，写入目录）
+\clearpage
+{\zihao{5}\input{sec-refs}}
+\clearpage
+{\zihao{5}\input{sec-appendix}}
+
+\end{document}
